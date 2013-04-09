@@ -13,7 +13,7 @@ tests pass.
 ## Usage
 
 ```js
-var multipart = require('connect-multiparty').multipart;
+var bodyParser = require('connect-multiparty').bodyParser;
 app.use(bodyParser());
 ```
 or
