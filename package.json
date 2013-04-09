@@ -1,0 +1,14 @@
+{
+  "name": "connect-multiparty",
+  "version": "0.0.0",
+  "description": "multipart parsing middleware for connect using multiparty",
+  "main": "index.js",
+  "repository": "",
+  "author": "Andrew Kelley <superjoe30@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "multiparty": "~2.1.3",
+    "qs": "~0.5.6",
+    "connect": "~2.7.4"
+  }
+}
