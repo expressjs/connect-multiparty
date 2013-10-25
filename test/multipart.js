@@ -1,20 +1,16 @@
-
-var connect = require('connect')
-  , multipart = require('../').multipart
-  , should = require('./shared');
+var connect = require('connect');
+var multipart = require('../');
+var should = require('should');
 
 var app = connect();
 
-app.use(multipart({ limit: '20mb' }));
+app.use(multipart());
 
 app.use(function(req, res){
   res.end(JSON.stringify(req.body));
 });
 
 describe('multipart()', function(){
-  should['default request body'](app);
-  should['limit body to']('20mb', 'multipart/form-data', app);
-
   it('should ignore GET', function(done){
     app.request()
     .get('/')
@@ -52,7 +48,7 @@ describe('multipart()', function(){
       app.use(multipart());
 
       app.use(function(req, res){
-        req.body.user.should.eql({ name: 'Tobi' });
+        should(req.body.user).eql({ name: 'Tobi' });
         req.files.text.path.should.include('.txt');
         req.files.text.constructor.name.should.equal('Object');
         res.end(req.files.text.originalFilename);
@@ -76,15 +72,13 @@ describe('multipart()', function(){
       });
     })
     
-    it('should expose options to formidable', function(done){
+    it('should keep extensions', function(done){
       var app = connect();
 
-      app.use(multipart({
-        keepExtensions: true
-      }));
+      app.use(multipart());
 
       app.use(function(req, res){
-        req.body.user.should.eql({ name: 'Tobi' });
+        should(req.body.user).eql({ name: 'Tobi' });
         req.files.text.path.should.include('.txt');
         req.files.text.constructor.name.should.equal('Object');
         res.end(req.files.text.originalFilename);
@@ -266,36 +260,5 @@ describe('multipart()', function(){
         done();
       });
     })
-
-    it('should defer processing if `defer` is set', function(done){
-      var app = connect();
-
-      app.use(multipart({ defer: true }));
-
-      app.use(function(req, res){
-        JSON.stringify(req.body).should.equal("{}");
-        req.form.on("close", function() {
-          res.end(JSON.stringify(req.body));
-        });
-      });
-
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user"\r\n')
-      .write('\r\n')
-      .write('Tobi')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="age"\r\n')
-      .write('\r\n')
-      .write('1')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.body.should.equal('{"user":"Tobi","age":"1"}');
-        done();
-      });
-    })
-
   })
 })
