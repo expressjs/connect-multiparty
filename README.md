@@ -1,7 +1,7 @@
 # connect-multiparty
 
 [connect](https://github.com/senchalabs/connect/) middleware for
-[multiparty](https://github.com/superjoe30/node-multiparty/).
+[multiparty](https://github.com/andrewrk/node-multiparty/).
 
 I actually recommend against using this module. It's cleaner to use the
 multiparty API directly.

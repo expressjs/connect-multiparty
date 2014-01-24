@@ -22,7 +22,7 @@ var multiparty = require('multiparty')
  *
  * Configuration:
  *
- *  The options passed are merged with [multiparty](https://github.com/superjoe30/node-multiparty)'s
+ *  The options passed are merged with [multiparty](https://github.com/andrewrk/node-multiparty)'s
  *  `Form` object, allowing you to configure the upload directory,
  *  size limits, etc. For example if you wish to change the upload dir do the following.
  *
