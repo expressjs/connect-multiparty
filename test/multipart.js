@@ -261,4 +261,37 @@ describe('multipart()', function(){
       });
     })
   })
+
+  it('should return 400 on maxFilesSize exceeded', function(done){
+    var app = connect();
+
+    var exp = 9;
+    app.use(multipart({ maxFilesSize: Math.pow(2, exp) }));
+
+    app.use(function(req, res){
+      res.end(JSON.stringify(req.files));
+    });
+
+    var str = 'x';
+    for (var i = 0; i < exp + 1; i += 1) {
+      str += str;
+    }
+
+    app.request()
+      .post('/')
+      .set('Content-Type', 'multipart/form-data; boundary=foo')
+      .write('--foo\r\n')
+      .write('Content-Disposition: form-data; name="user[name]"\r\n')
+      .write('\r\n')
+      .write('Tobi')
+      .write('\r\n--foo\r\n')
+      .write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n')
+      .write('\r\n')
+      .write(str)
+      .write('\r\n--foo--')
+      .end(function(res){
+        res.statusCode.should.equal(400);
+        done();
+      });
+  })
 })
