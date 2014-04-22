@@ -3,9 +3,6 @@
 [connect](https://github.com/senchalabs/connect/) middleware for
 [multiparty](https://github.com/andrewrk/node-multiparty/).
 
-~I actually recommend against using this module. It's cleaner to use the
-multiparty API directly.~
-
 You should not add this middleware to all routes; only to the ones
 in which you want to accept uploads. 
 
@@ -22,10 +19,9 @@ automatic temp files cleaning with something like [reap](https://github.com/visi
 
 ```js
 var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart();
+var multipartMiddleware = multipart({}, true);
 app.post('/upload', multipartMiddleware, function(req, resp) {
   console.log(req.body, req.files);
-  // don't forget to delete all req.files when done
 });
 ```
 ## Options
