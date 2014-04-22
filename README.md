@@ -28,12 +28,12 @@ app.post('/upload', multipartMiddleware, function(req, resp) {
   // don't forget to delete all req.files when done
 });
 ```
-
-```multipart()``` options are:
+## Options
 
 ```js
 multipart(options, autoClean)
 ```
 
-```options``` object is passed directly into multiparty.
-```autoClean``` will remove all temp files on request finishing
+* ```options``` object is passed directly into multiparty.
+
+* ```autoClean``` set to true to remove all temp files on request finishing.
