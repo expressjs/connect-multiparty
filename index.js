@@ -11,7 +11,8 @@
  */
 
 var multiparty = require('multiparty')
-  , qs = require('qs');
+  , qs = require('qs')
+  , fs = require('fs');
 
 /**
  * Multipart:
@@ -33,8 +34,9 @@ var multiparty = require('multiparty')
  * @api public
  */
 
-exports = module.exports = function(options){
+exports = module.exports = function(options, autoClean){
   options = options || {};
+  autoClean = autoClean || false;
 
   return function multipart(req, res, next) {
     if (req._body) return next();
@@ -76,6 +78,14 @@ exports = module.exports = function(options){
       val.name = val.originalFilename;
       val.type = val.headers['content-type'] || null;
       ondata(name, val, files);
+      if (autoClean) {
+        res.on('finish', function () {
+          fs.unlink(val.path, function (e) {
+            if (e)
+              console.log('connect-multiparty autoclean error: ' + e);
+          });
+        });
+      }
     });
 
     form.on('error', function(err){
