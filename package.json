@@ -19,7 +19,9 @@
   "devDependencies": {
     "mocha": "~1.13.0",
     "should": "~2.0.2",
-    "connect": "~2.9.2"
+    "connect": "~2.9.2",
+    "express": "~4.0.0",
+    "body-parser": "~1.0.2"
   },
   "bugs": {
     "url": "https://github.com/andrewrk/connect-multiparty/issues"
