@@ -1,5 +1,9 @@
+
+process.env.NODE_ENV = 'test';
+
 var connect = require('connect');
-var multipart = require('../');
+var multipart = require('..');
+var request = require('supertest');
 var should = require('should');
 
 var app = connect();
@@ -12,34 +16,26 @@ app.use(function(req, res){
 
 describe('multipart()', function(){
   it('should ignore GET', function(done){
-    app.request()
-    .get('/')
-    .set('Content-Type', 'multipart/form-data; boundary=foo')
-    .write('--foo\r\n')
-    .write('Content-Disposition: form-data; name="user"\r\n')
-    .write('\r\n')
-    .write('Tobi')
-    .write('\r\n--foo--')
-    .end(function(res){
-      res.body.should.equal('{}');
-      done();
-    });
+    var test = request(app).get('/');
+    test.set('Content-Type', 'multipart/form-data; boundary=foo');
+    test.write('--foo\r\n');
+    test.write('Content-Disposition: form-data; name="user"\r\n');
+    test.write('\r\n');
+    test.write('Tobi');
+    test.write('\r\n--foo--');
+    test.expect(200, '{}', done);
   })
 
   describe('with multipart/form-data', function(){
     it('should populate req.body', function(done){
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user"\r\n')
-      .write('\r\n')
-      .write('Tobi')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.body.should.equal('{"user":"Tobi"}');
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user"\r\n');
+      test.write('\r\n');
+      test.write('Tobi');
+      test.write('\r\n--foo--');
+      test.expect(200, '{"user":"Tobi"}', done);
     })
     
     it('should support files', function(done){
@@ -54,22 +50,18 @@ describe('multipart()', function(){
         res.end(req.files.text.originalFilename);
       });
 
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user[name]"\r\n')
-      .write('\r\n')
-      .write('Tobi')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n')
-      .write('\r\n')
-      .write('some text here')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.body.should.equal('foo.txt');
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user[name]"\r\n');
+      test.write('\r\n');
+      test.write('Tobi');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n');
+      test.write('\r\n');
+      test.write('some text here');
+      test.write('\r\n--foo--');
+      test.expect(200, 'foo.txt', done);
     })
     
     it('should keep extensions', function(done){
@@ -84,66 +76,58 @@ describe('multipart()', function(){
         res.end(req.files.text.originalFilename);
       });
 
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user[name]"\r\n')
-      .write('\r\n')
-      .write('Tobi')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n')
-      .write('\r\n')
-      .write('some text here')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.body.should.equal('foo.txt');
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user[name]"\r\n');
+      test.write('\r\n');
+      test.write('Tobi');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n');
+      test.write('\r\n');
+      test.write('some text here');
+      test.write('\r\n--foo--');
+      test.expect(200, 'foo.txt', done);
     })
     
     it('should work with multiple fields', function(done){
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user"\r\n')
-      .write('\r\n')
-      .write('Tobi')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="age"\r\n')
-      .write('\r\n')
-      .write('1')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.body.should.equal('{"user":"Tobi","age":"1"}');
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user"\r\n');
+      test.write('\r\n');
+      test.write('Tobi');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="age"\r\n');
+      test.write('\r\n');
+      test.write('1');
+      test.write('\r\n--foo--');
+      test.expect(200, '{"user":"Tobi","age":"1"}', done);
     })
     
     it('should support nesting', function(done){
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user[name][first]"\r\n')
-      .write('\r\n')
-      .write('tobi')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="user[name][last]"\r\n')
-      .write('\r\n')
-      .write('holowaychuk')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="user[age]"\r\n')
-      .write('\r\n')
-      .write('1')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="species"\r\n')
-      .write('\r\n')
-      .write('ferret')
-      .write('\r\n--foo--')
-      .end(function(res){
-        var obj = JSON.parse(res.body);
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user[name][first]"\r\n');
+      test.write('\r\n');
+      test.write('tobi');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user[name][last]"\r\n');
+      test.write('\r\n');
+      test.write('holowaychuk');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user[age]"\r\n');
+      test.write('\r\n');
+      test.write('1');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="species"\r\n');
+      test.write('\r\n');
+      test.write('ferret');
+      test.write('\r\n--foo--');
+      test.expect(200, function(err, res){
+        if (err) return done(err);
+        var obj = JSON.parse(res.text);
         obj.user.age.should.equal('1');
         obj.user.name.should.eql({ first: 'tobi', last: 'holowaychuk' });
         obj.species.should.equal('ferret');
@@ -163,22 +147,18 @@ describe('multipart()', function(){
         res.end();
       });
 
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n')
-      .write('\r\n')
-      .write('some text here')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="text"; filename="bar.txt"\r\n')
-      .write('\r\n')
-      .write('some more text stuff')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.statusCode.should.equal(200);
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n');
+      test.write('\r\n');
+      test.write('some text here');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="text"; filename="bar.txt"\r\n');
+      test.write('\r\n');
+      test.write('some more text stuff');
+      test.write('\r\n--foo--');
+      test.expect(200, done);
     })
     
     it('should support nested files', function(done){
@@ -193,22 +173,18 @@ describe('multipart()', function(){
         res.end();
       });
 
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="docs[foo]"; filename="foo.txt"\r\n')
-      .write('\r\n')
-      .write('some text here')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="docs[bar]"; filename="bar.txt"\r\n')
-      .write('\r\n')
-      .write('some more text stuff')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.statusCode.should.equal(200);
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="docs[foo]"; filename="foo.txt"\r\n');
+      test.write('\r\n');
+      test.write('some text here');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="docs[bar]"; filename="bar.txt"\r\n');
+      test.write('\r\n');
+      test.write('some more text stuff');
+      test.write('\r\n--foo--');
+      test.expect(200, done);
     })
     
     it('should next(err) on multipart failure', function(done){
@@ -226,22 +202,17 @@ describe('multipart()', function(){
         res.end('bad request');
       });
 
-      app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-filename="foo.txt"\r\n')
-      .write('\r\n')
-      .write('some text here')
-      .write('Content-Disposition: form-data; name="text"; filename="bar.txt"\r\n')
-      .write('\r\n')
-      .write('some more text stuff')
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.statusCode.should.equal(400);
-        res.body.should.equal('bad request');
-        done();
-      });
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-filename="foo.txt"\r\n');
+      test.write('\r\n');
+      test.write('some text here');
+      test.write('Content-Disposition: form-data; name="text"; filename="bar.txt"\r\n');
+      test.write('\r\n');
+      test.write('some more text stuff');
+      test.write('\r\n--foo--');
+      test.expect(400, 'bad request', done);
     })
 
     it('should default req.files to {}', function(done){
@@ -253,12 +224,9 @@ describe('multipart()', function(){
         res.end(JSON.stringify(req.files));
       });
 
-      app.request()
+      request(app)
       .post('/')
-      .end(function(res){
-        res.body.should.equal('{}');
-        done();
-      });
+      .expect(200, '{}', done);
     })
   })
 
@@ -277,21 +245,17 @@ describe('multipart()', function(){
       str += str;
     }
 
-    app.request()
-      .post('/')
-      .set('Content-Type', 'multipart/form-data; boundary=foo')
-      .write('--foo\r\n')
-      .write('Content-Disposition: form-data; name="user[name]"\r\n')
-      .write('\r\n')
-      .write('Tobi')
-      .write('\r\n--foo\r\n')
-      .write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n')
-      .write('\r\n')
-      .write(str)
-      .write('\r\n--foo--')
-      .end(function(res){
-        res.statusCode.should.equal(400);
-        done();
-      });
+    var test =request(app).post('/');
+    test.set('Content-Type', 'multipart/form-data; boundary=foo');
+    test.write('--foo\r\n');
+    test.write('Content-Disposition: form-data; name="user[name]"\r\n');
+    test.write('\r\n');
+    test.write('Tobi');
+    test.write('\r\n--foo\r\n');
+    test.write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n');
+    test.write('\r\n');
+    test.write(str);
+    test.write('\r\n--foo--');
+    test.expect(400, done);
   })
 })
