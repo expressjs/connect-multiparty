@@ -228,34 +228,36 @@ describe('multipart()', function(){
       .post('/')
       .expect(200, '{}', done);
     })
-  })
 
-  it('should return 400 on maxFilesSize exceeded', function(done){
-    var app = connect();
+    it('should return 400 on maxFilesSize exceeded', function(done){
+      var app = connect();
 
-    var exp = 9;
-    app.use(multipart({ maxFilesSize: Math.pow(2, exp) }));
+      app.use(multipart({ maxFilesSize: 1024 * 12 }));
 
-    app.use(function(req, res){
-      res.end(JSON.stringify(req.files));
+      app.use(function(req, res){
+        res.end(JSON.stringify(req.files));
+      });
+
+      var str = '';
+      for (var i = 0; i < 1024 * 10; i += 1) {
+        str += 'x';
+      }
+
+      var test = request(app).post('/');
+      test.set('Content-Type', 'multipart/form-data; boundary=foo');
+      test.write('--foo\r\n');
+      test.write('Content-Disposition: form-data; name="user[name]"\r\n');
+      test.write('\r\n');
+      test.write('Tobi');
+      test.write('\r\n--foo\r\n');
+      test.write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n');
+      test.write('\r\n');
+      test.write(str);
+      test.write(str);
+      test.write(str);
+      test.write(str);
+      test.write('\r\n--foo--');
+      test.expect(400, done);
     });
-
-    var str = 'x';
-    for (var i = 0; i < exp + 1; i += 1) {
-      str += str;
-    }
-
-    var test =request(app).post('/');
-    test.set('Content-Type', 'multipart/form-data; boundary=foo');
-    test.write('--foo\r\n');
-    test.write('Content-Disposition: form-data; name="user[name]"\r\n');
-    test.write('\r\n');
-    test.write('Tobi');
-    test.write('\r\n--foo\r\n');
-    test.write('Content-Disposition: form-data; name="text"; filename="foo.txt"\r\n');
-    test.write('\r\n');
-    test.write(str);
-    test.write('\r\n--foo--');
-    test.expect(400, done);
   })
 })
