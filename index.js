@@ -118,7 +118,8 @@ exports = module.exports = function(options){
         req.files = qs.parse(files);
         next();
       } catch (err) {
-        form.emit('error', err);
+        err.status = 400;
+        next(err);
       }
     });
     
