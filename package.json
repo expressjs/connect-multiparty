@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "connect": "2",
-    "mocha": "~1.13.0",
-    "should": "~2.0.2",
+    "mocha": "~1.19.0",
+    "should": "~3.3.2",
     "supertest": "~0.13.0"
   },
   "bugs": {
