@@ -1,3 +1,8 @@
+### 1.0.4
+
+ * Fix error causing response to hang
+ * Update multiparty to 3.2.6
+
 ### 1.0.3
 
  * Update multiparty to 3.2
