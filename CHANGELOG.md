@@ -1,3 +1,7 @@
+### 1.0.6
+
+ * Fix callback hang in node.js 0.8 on errors
+
 ### 1.0.5
 
  * Update multiparty to 3.2.8
