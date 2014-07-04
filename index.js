@@ -10,8 +10,9 @@
  * Module dependencies.
  */
 
-var multiparty = require('multiparty')
-  , qs = require('qs');
+var multiparty = require('multiparty');
+var qs = require('qs');
+var typeis = require('type-is');
 
 /**
  * Multipart:
@@ -41,13 +42,11 @@ exports = module.exports = function(options){
     req.body = req.body || {};
     req.files = req.files || {};
 
-    if (!hasBody(req)) return next();
-
     // ignore GET
     if ('GET' === req.method || 'HEAD' === req.method) return next();
 
     // check Content-Type
-    if ('multipart/form-data' !== mime(req)) return next();
+    if (!typeis(req, 'multipart/form-data')) return next();
 
     // flag as parsed
     req._body = true;
@@ -128,17 +127,3 @@ exports = module.exports = function(options){
     form.parse(req);
   }
 };
-
-// utility functions copied from connect
-
-function hasBody(req) {
-  var encoding = 'transfer-encoding' in req.headers,
-      length = 'content-length' in req.headers &&
-        req.headers['content-length'] !== '0';
-  return encoding || length;
-}
-
-function mime(req) {
-  var str = req.headers['content-type'] || '';
-  return str.split(';')[0];
-}
