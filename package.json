@@ -10,7 +10,7 @@
   "author": "Andrew Kelley <superjoe30@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "multiparty": "~3.2.10",
+    "multiparty": "~3.3.0",
     "qs": "~0.6.5"
   },
   "scripts": {
