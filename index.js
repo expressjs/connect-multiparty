@@ -96,16 +96,18 @@ exports = module.exports = function(options){
       done = true;
       err.status = 400;
 
-      if (waitend && req.readable) {
-        // read off entire request
-        req.resume();
-        req.once('end', function onEnd() {
-          next(err)
-        });
-        return;
-      }
+      process.nextTick(function(){
+        if (waitend && req.readable) {
+          // read off entire request
+          req.resume();
+          req.once('end', function onEnd() {
+            next(err)
+          });
+          return;
+        }
 
-      next(err);
+        next(err);
+      });
     });
 
     form.on('close', function() {
