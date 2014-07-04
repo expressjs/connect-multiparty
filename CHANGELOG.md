@@ -1,3 +1,8 @@
+### 1.1.0
+
+ * Update multiparty to 3.3.0
+ * Use type-is to check Content-Type
+
 ### 1.0.6
 
  * Fix callback hang in node.js 0.8 on errors
