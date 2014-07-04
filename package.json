@@ -17,9 +17,9 @@
     "test": "mocha --reporter spec --timeout 600 test/*.js"
   },
   "devDependencies": {
-    "connect": "2",
-    "mocha": "~1.19.0",
-    "should": "~3.3.2",
+    "connect": "3",
+    "mocha": "~1.20.1",
+    "should": "~4.0.4",
     "supertest": "~0.13.0"
   },
   "bugs": {
