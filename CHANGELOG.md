@@ -1,3 +1,8 @@
+### 1.2.1
+
+  * Update multiparty to 3.3.2
+  * Update qs to 1.2.0
+
 ### 1.2.0
 
   * Update multiparty to 3.3.1
