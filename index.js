@@ -11,6 +11,7 @@
  */
 
 var multiparty = require('multiparty');
+var onFinished = require('on-finished');
 var qs = require('qs');
 var typeis = require('type-is');
 
@@ -55,19 +56,7 @@ exports = module.exports = function(options){
     var form = new multiparty.Form(options);
     var data = {};
     var files = {};
-    var waitend = true;
     var done = false;
-
-    req.on('aborted', cleanup)
-    req.on('end', cleanup)
-    req.on('error', cleanup)
-
-    function cleanup() {
-      waitend = false;
-      req.removeListener('aborted', cleanup);
-      req.removeListener('end', cleanup);
-      req.removeListener('error', cleanup);
-    }
 
     function ondata(name, val, data){
       if (Array.isArray(data[name])) {
@@ -95,16 +84,8 @@ exports = module.exports = function(options){
       done = true;
       err.status = 400;
 
-      process.nextTick(function(){
-        if (waitend && req.readable) {
-          // read off entire request
-          req.resume();
-          req.once('end', function onEnd() {
-            next(err)
-          });
-          return;
-        }
-
+      req.resume();
+      onFinished(req, function(){
         next(err);
       });
     });
