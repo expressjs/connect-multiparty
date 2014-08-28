@@ -1,3 +1,7 @@
+### 1.2.3
+
+  * Update qs to 2.2.1
+
 ### 1.2.2
 
   * Update qs to 2.2.0
