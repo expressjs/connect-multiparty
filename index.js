@@ -84,6 +84,8 @@ exports = module.exports = function(options){
       done = true;
       err.status = 400;
 
+      if (!req.readable) return next(err);
+
       req.resume();
       onFinished(req, function(){
         next(err);
