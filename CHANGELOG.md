@@ -1,3 +1,8 @@
+### 1.2.5
+
+  * Update qs to 2.2.4
+  * Update type-is to 1.5.2
+
 ### 1.2.4
 
   * Update qs to 2.2.2

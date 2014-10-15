@@ -1,6 +1,6 @@
 {
   "name": "connect-multiparty",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "multipart parsing middleware for connect using multiparty",
   "main": "index.js",
   "repository": {
