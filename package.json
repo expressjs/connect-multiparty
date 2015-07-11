@@ -16,7 +16,7 @@
     "type-is": "~1.5.2"
   },
   "scripts": {
-    "test": "mocha --reporter spec --timeout 600 test/*.js"
+    "test": "mocha --reporter spec test/*.js"
   },
   "devDependencies": {
     "connect": "3",
