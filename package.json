@@ -24,7 +24,7 @@
   "devDependencies": {
     "connect": "3",
     "mocha": "~1.21.3",
-    "should": "~4.0.4",
+    "should": "~7.0.2",
     "supertest": "~0.14.0"
   },
   "bugs": {
