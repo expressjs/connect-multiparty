@@ -18,6 +18,9 @@
   "scripts": {
     "test": "mocha --reporter spec test/*.js"
   },
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "devDependencies": {
     "connect": "3",
     "mocha": "~1.21.3",
