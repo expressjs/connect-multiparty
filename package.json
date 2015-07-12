@@ -25,7 +25,7 @@
     "connect": "3",
     "mocha": "~2.2.5",
     "should": "~7.0.2",
-    "supertest": "~0.14.0"
+    "supertest": "~1.0.1"
   },
   "bugs": {
     "url": "https://github.com/andrewrk/connect-multiparty/issues"

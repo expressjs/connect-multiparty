@@ -45,7 +45,7 @@ describe('multipart()', function(){
       request(app)
       .post('/')
       .field('user[name]', 'Tobi')
-      .attach('text', new Buffer('some text here'), { filename: 'foo.txt' })
+      .attach('text', new Buffer('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
     
@@ -64,7 +64,7 @@ describe('multipart()', function(){
       request(app)
       .post('/')
       .field('user[name]', 'Tobi')
-      .attach('text', new Buffer('some text here'), { filename: 'foo.txt' })
+      .attach('text', new Buffer('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
     
@@ -126,8 +126,8 @@ describe('multipart()', function(){
 
       request(app)
       .post('/')
-      .attach('docs[foo]', new Buffer('some text here'), { filename: 'foo.txt' })
-      .attach('docs[bar]', new Buffer('some more text stuff'), { filename: 'bar.txt' })
+      .attach('docs[foo]', new Buffer('some text here'), 'foo.txt')
+      .attach('docs[bar]', new Buffer('some more text stuff'), 'bar.txt')
       .expect(200, done);
     })
     
