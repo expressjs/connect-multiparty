@@ -1,3 +1,11 @@
+### 2.0.0
+
+  * Requires Node.js >= 0.10.0
+  * Update multiparty to 4.1.2
+  * Update on-finished to 2.3.0
+  * Update qs to 4.0.0
+  * Update type-is to 1.6.4
+
 ### 1.2.5
 
   * Update qs to 2.2.4
