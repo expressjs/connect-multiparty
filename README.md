@@ -24,3 +24,8 @@ app.post('/upload', multipartMiddleware, function(req, resp) {
 
 If you pass options to `multipart()`, they are passed directly into
 multiparty.
+
+Additional options:
+
+- deleteOnFinish - An array of files to delete, true for all files or null for not deleting any file (default: null)
+                    If an error occurred during delete, it is ignored.
