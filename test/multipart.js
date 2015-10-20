@@ -107,8 +107,8 @@ describe('multipart()', function(){
 
       request(app)
       .post('/')
-      .attach('text', new Buffer('some text here'), { filename: 'foo.txt' })
-      .attach('text', new Buffer('some more text stuff'), { filename: 'bar.txt' })
+      .attach('text', new Buffer('some text here'), 'foo.txt')
+      .attach('text', new Buffer('some more text stuff'), 'bar.txt')
       .expect(200, done);
     })
     
@@ -225,7 +225,7 @@ describe('multipart()', function(){
       request(app)
       .post('/')
       .field('user[name]', 'Tobi')
-      .attach('text', new Buffer(str), { filename: 'foo.txt' })
+      .attach('text', new Buffer(str), 'foo.txt')
       .expect(400, done);
     })
   })
