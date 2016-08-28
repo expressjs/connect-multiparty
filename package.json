@@ -22,7 +22,7 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
-    "connect": "3",
+    "connect": "3.4.1",
     "mocha": "3.0.2",
     "should": "11.1.0",
     "supertest": "~1.0.1"
