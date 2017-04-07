@@ -2,7 +2,6 @@
   "name": "connect-multiparty",
   "version": "2.0.0",
   "description": "multipart parsing middleware for connect using multiparty",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/andrewrk/connect-multiparty.git"
