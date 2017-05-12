@@ -12,7 +12,7 @@
   "dependencies": {
     "multiparty": "~4.1.2",
     "on-finished": "~2.3.0",
-    "qs": "~4.0.0",
+    "qs": "6.0.4",
     "type-is": "~1.6.4"
   },
   "scripts": {
