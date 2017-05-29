@@ -2,12 +2,9 @@
   "name": "connect-multiparty",
   "version": "2.0.0",
   "description": "multipart parsing middleware for connect using multiparty",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/andrewrk/connect-multiparty.git"
-  },
   "author": "Andrew Kelley <superjoe30@gmail.com>",
   "license": "MIT",
+  "repository": "expressjs/connect-multiparty",
   "dependencies": {
     "multiparty": "~4.1.2",
     "on-finished": "~2.3.0",
@@ -25,8 +22,5 @@
     "mocha": "3.0.2",
     "should": "11.1.0",
     "supertest": "2.0.0"
-  },
-  "bugs": {
-    "url": "https://github.com/andrewrk/connect-multiparty/issues"
   }
 }
