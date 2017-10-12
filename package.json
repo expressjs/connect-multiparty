@@ -11,16 +11,19 @@
     "qs": "~4.0.0",
     "type-is": "~1.6.15"
   },
-  "scripts": {
-    "test": "mocha --reporter spec test/*.js"
-  },
   "engines": {
     "node": ">=0.10.0"
   },
   "devDependencies": {
     "connect": "3.6.5",
     "mocha": "3.5.3",
+    "nyc": "10.3.2",
     "should": "13.1.2",
     "supertest": "2.0.0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec",
+    "test-ci": "nyc --reporter=text npm test",
+    "test-cov": "nyc --reporter=html --reporter=text npm test"
   }
 }

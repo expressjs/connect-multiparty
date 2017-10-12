@@ -11,3 +11,9 @@ before_install:
   # Update Node.js modules
   - "test ! -d node_modules || npm prune"
   - "test ! -d node_modules || npm rebuild"
+script:
+  # Run test script
+  - "npm run-script test-ci"
+after_script:
+  # Report coverage
+  - "test -d .nyc_output && npm install coveralls@2 && nyc report --reporter=text-lcov | coveralls"
