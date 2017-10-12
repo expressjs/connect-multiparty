@@ -1,5 +1,9 @@
 # connect-multiparty
 
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![Build Status][travis-image]][travis-url]
+
 [connect](https://github.com/senchalabs/connect/) middleware for
 [multiparty](https://github.com/andrewrk/node-multiparty/).
 
@@ -24,3 +28,10 @@ app.post('/upload', multipartMiddleware, function(req, resp) {
 
 If you pass options to `multipart()`, they are passed directly into
 multiparty.
+
+[downloads-image]: https://img.shields.io/npm/dm/connect-multiparty.svg
+[downloads-url]: https://npmjs.org/package/connect-multiparty
+[npm-image]: https://img.shields.io/npm/v/connect-multiparty.svg
+[npm-url]: https://npmjs.org/package/connect-multiparty
+[travis-image]: https://img.shields.io/travis/expressjs/connect-multiparty/master.svg
+[travis-url]: https://travis-ci.org/expressjs/connect-multiparty
