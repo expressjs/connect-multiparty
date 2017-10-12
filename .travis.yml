@@ -4,3 +4,10 @@ node_js:
   - "4.8"
   - "6.11"
 sudo: false
+cache:
+  directories:
+    - node_modules
+before_install:
+  # Update Node.js modules
+  - "test ! -d node_modules || npm prune"
+  - "test ! -d node_modules || npm rebuild"
