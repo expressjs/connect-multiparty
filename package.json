@@ -21,6 +21,11 @@
     "should": "13.1.2",
     "supertest": "2.0.0"
   },
+  "files": [
+    "HISTORY.md",
+    "README.md",
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha --reporter spec",
     "test-ci": "nyc --reporter=text npm test",
