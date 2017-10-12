@@ -20,7 +20,7 @@
   "devDependencies": {
     "connect": "3.4.1",
     "mocha": "3.0.2",
-    "should": "11.1.0",
+    "should": "13.1.2",
     "supertest": "2.0.0"
   }
 }
