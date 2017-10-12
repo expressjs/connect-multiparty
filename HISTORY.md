@@ -1,3 +1,10 @@
+unreleased
+==========
+
+  * deps: multiparty@~4.1.3
+    - Use `os.tmpdir()` instead of `os.tmpDir()`
+    - deps: fd-slicer@~1.0.1
+
 2.0.0 / 2015-07-13
 ==================
 
