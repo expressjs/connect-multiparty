@@ -4,6 +4,9 @@ unreleased
   * deps: multiparty@~4.1.3
     - Use `os.tmpdir()` instead of `os.tmpDir()`
     - deps: fd-slicer@~1.0.1
+  * deps: type-is@~1.6.15
+    - Fix type error when given invalid type to match against
+    - deps: mime-types@~2.1.15
 
 2.0.0 / 2015-07-13
 ==================
