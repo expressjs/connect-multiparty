@@ -12,7 +12,7 @@ describe('multipart()', function(){
     request(createServer())
     .get('/body')
     .field('user', 'Tobi')
-    .expect(200, '{}', done);
+    .expect(200, {}, done)
   })
 
   describe('with multipart/form-data', function(){
@@ -20,7 +20,7 @@ describe('multipart()', function(){
       request(createServer())
       .post('/body')
       .field('user', 'Tobi')
-      .expect(200, '{"user":"Tobi"}', done);
+      .expect(200, { user: 'Tobi' }, done)
     })
 
     it('should support files', function(done){
@@ -62,7 +62,7 @@ describe('multipart()', function(){
       .post('/body')
       .field('user', 'Tobi')
       .field('age', '1')
-      .expect(200, '{"user":"Tobi","age":"1"}', done);
+      .expect(200, { user: 'Tobi', age: '1' }, done)
     })
     
     it('should support nesting', function(done){
@@ -72,14 +72,13 @@ describe('multipart()', function(){
       .field('user[name][last]', 'holowaychuk')
       .field('user[age]', '1')
       .field('species', 'ferret')
-      .expect(200, function(err, res){
-        if (err) return done(err);
-        var obj = JSON.parse(res.text);
-        obj.user.age.should.equal('1');
-        obj.user.name.should.eql({ first: 'tobi', last: 'holowaychuk' });
-        obj.species.should.equal('ferret');
-        done();
-      });
+      .expect(200, {
+        species: 'ferret',
+        user: {
+          age: '1',
+          name: { first: 'tobi', last: 'holowaychuk' }
+        }
+      }, done)
     })
 
     it('should support multiple files of the same name', function(done){
@@ -167,7 +166,7 @@ describe('multipart()', function(){
     it('should default req.files to {}', function(done){
       request(createServer())
       .post('/body')
-      .expect(200, '{}', done);
+      .expect(200, {}, done)
     })
 
     it('should return 400 on maxFilesSize exceeded', function(done){
@@ -188,10 +187,12 @@ function createServer (opts) {
   app.use(multipart(opts))
 
   app.use('/body', function (req, res) {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8')
     res.end(JSON.stringify(req.body))
   })
 
   app.use('/files', function (req, res) {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8')
     res.end(JSON.stringify(req.files))
   })
 
