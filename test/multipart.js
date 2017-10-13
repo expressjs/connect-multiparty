@@ -6,34 +6,24 @@ var multipart = require('..');
 var request = require('supertest');
 var should = require('should');
 
-var app = connect();
-
-app.use(multipart());
-
-app.use(function(req, res){
-  res.end(JSON.stringify(req.body));
-});
-
 describe('multipart()', function(){
   it('should ignore GET', function(done){
-    request(app)
-    .get('/')
+    request(createServer())
+    .get('/body')
     .field('user', 'Tobi')
     .expect(200, '{}', done);
   })
 
   describe('with multipart/form-data', function(){
     it('should populate req.body', function(done){
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/body')
       .field('user', 'Tobi')
       .expect(200, '{"user":"Tobi"}', done);
     })
 
     it('should support files', function(done){
-      var app = connect();
-
-      app.use(multipart());
+      var app = createServer()
 
       app.use(function(req, res){
         should(req.body.user).eql({ name: 'Tobi' });
@@ -50,9 +40,7 @@ describe('multipart()', function(){
     })
     
     it('should keep extensions', function(done){
-      var app = connect();
-
-      app.use(multipart());
+      var app = createServer()
 
       app.use(function(req, res){
         should(req.body.user).eql({ name: 'Tobi' });
@@ -69,16 +57,16 @@ describe('multipart()', function(){
     })
     
     it('should work with multiple fields', function(done){
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/body')
       .field('user', 'Tobi')
       .field('age', '1')
       .expect(200, '{"user":"Tobi","age":"1"}', done);
     })
     
     it('should support nesting', function(done){
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/body')
       .field('user[name][first]', 'tobi')
       .field('user[name][last]', 'holowaychuk')
       .field('user[age]', '1')
@@ -94,9 +82,7 @@ describe('multipart()', function(){
     })
 
     it('should support multiple files of the same name', function(done){
-      var app = connect();
-
-      app.use(multipart());
+      var app = createServer()
 
       app.use(function(req, res){
         req.files.text.should.have.length(2);
@@ -113,9 +99,7 @@ describe('multipart()', function(){
     })
     
     it('should support nested files', function(done){
-      var app = connect();
-
-      app.use(multipart());
+      var app = createServer()
 
       app.use(function(req, res){
         Object.keys(req.files.docs).should.have.length(2);
@@ -132,13 +116,7 @@ describe('multipart()', function(){
     })
     
     it('should next(err) on multipart failure', function(done){
-      var app = connect();
-
-      app.use(multipart());
-
-      app.use(function(req, res){
-        res.end('whoop');
-      });
+      var app = createServer()
 
       app.use(function(err, req, res, next){
         err.message.should.equal('Expected alphabetic character, received 61');
@@ -160,14 +138,8 @@ describe('multipart()', function(){
     })
 
     it('should not hang request on failure', function(done){
-      var app = connect();
+      var app = createServer()
       var buf = new Buffer(1024 * 10);
-
-      app.use(multipart());
-
-      app.use(function(req, res){
-        res.end('whoop');
-      });
 
       app.use(function(err, req, res, next){
         err.message.should.equal('Expected alphabetic character, received 61');
@@ -194,39 +166,39 @@ describe('multipart()', function(){
     })
 
     it('should default req.files to {}', function(done){
-      var app = connect();
-
-      app.use(multipart());
-
-      app.use(function(req, res){
-        res.end(JSON.stringify(req.files));
-      });
-
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/body')
       .expect(200, '{}', done);
     })
 
     it('should return 400 on maxFilesSize exceeded', function(done){
-      var app = connect();
-
       var exp = 9;
-      app.use(multipart({ maxFilesSize: Math.pow(2, exp) }));
-
-      app.use(function(req, res){
-        res.end(JSON.stringify(req.files));
-      });
-
       var str = 'x';
       for (var i = 0; i < exp + 1; i += 1) {
         str += str;
       }
 
-      request(app)
-      .post('/')
+      request(createServer({ maxFilesSize: Math.pow(2, exp) }))
+      .post('/files')
       .field('user[name]', 'Tobi')
       .attach('text', new Buffer(str), 'foo.txt')
       .expect(400, done);
     })
   })
 })
+
+function createServer (opts) {
+  var app = connect()
+
+  app.use(multipart(opts))
+
+  app.use('/body', function (req, res) {
+    res.end(JSON.stringify(req.body))
+  })
+
+  app.use('/files', function (req, res) {
+    res.end(JSON.stringify(req.files))
+  })
+
+  return app
+}
