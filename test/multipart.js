@@ -1,6 +1,7 @@
 
 process.env.NODE_ENV = 'test';
 
+var Buffer = require('safe-buffer').Buffer
 var connect = require('connect');
 var multipart = require('..');
 var request = require('supertest');
@@ -35,7 +36,7 @@ describe('multipart()', function(){
       request(app)
       .post('/')
       .field('user[name]', 'Tobi')
-      .attach('text', new Buffer('some text here'), 'foo.txt')
+      .attach('text', Buffer.from('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
     
@@ -52,7 +53,7 @@ describe('multipart()', function(){
       request(app)
       .post('/')
       .field('user[name]', 'Tobi')
-      .attach('text', new Buffer('some text here'), 'foo.txt')
+      .attach('text', Buffer.from('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
     
@@ -93,8 +94,8 @@ describe('multipart()', function(){
 
       request(app)
       .post('/')
-      .attach('text', new Buffer('some text here'), 'foo.txt')
-      .attach('text', new Buffer('some more text stuff'), 'bar.txt')
+      .attach('text', Buffer.from('some text here'), 'foo.txt')
+      .attach('text', Buffer.from('some more text stuff'), 'bar.txt')
       .expect(200, done);
     })
     
@@ -110,8 +111,8 @@ describe('multipart()', function(){
 
       request(app)
       .post('/')
-      .attach('docs[foo]', new Buffer('some text here'), 'foo.txt')
-      .attach('docs[bar]', new Buffer('some more text stuff'), 'bar.txt')
+      .attach('docs[foo]', Buffer.from('some text here'), 'foo.txt')
+      .attach('docs[bar]', Buffer.from('some more text stuff'), 'bar.txt')
       .expect(200, done);
     })
     
@@ -139,15 +140,13 @@ describe('multipart()', function(){
 
     it('should not hang request on failure', function(done){
       var app = createServer()
-      var buf = new Buffer(1024 * 10);
+      var buf = Buffer.alloc(1024 * 10, '.')
 
       app.use(function(err, req, res, next){
         err.message.should.equal('Expected alphabetic character, received 61');
         res.statusCode = err.status;
         res.end('bad request');
       });
-
-      buf.fill('.');
 
       var test = request(app).post('/');
       test.set('Content-Type', 'multipart/form-data; boundary=foo');
@@ -172,16 +171,12 @@ describe('multipart()', function(){
     })
 
     it('should return 400 on maxFilesSize exceeded', function(done){
-      var exp = 9;
-      var str = 'x';
-      for (var i = 0; i < exp + 1; i += 1) {
-        str += str;
-      }
+      var max = Math.pow(2, 9)
 
-      request(createServer({ maxFilesSize: Math.pow(2, exp) }))
+      request(createServer({ maxFilesSize: max }))
       .post('/files')
       .field('user[name]', 'Tobi')
-      .attach('text', new Buffer(str), 'foo.txt')
+      .attach('text', Buffer.alloc(max + 1, 'x'), 'foo.txt')
       .expect(400, done);
     })
   })

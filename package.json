@@ -18,6 +18,7 @@
     "connect": "3.6.5",
     "mocha": "3.5.3",
     "nyc": "10.3.2",
+    "safe-buffer": "5.1.1",
     "should": "13.1.2",
     "supertest": "2.0.0"
   },
