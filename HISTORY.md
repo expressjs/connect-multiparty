@@ -1,9 +1,14 @@
-unreleased
-==========
+3.x
+===
 
   * deps: multiparty@~4.1.3
     - Use `os.tmpdir()` instead of `os.tmpDir()`
     - deps: fd-slicer@~1.0.1
+  * deps: qs@~6.5.1
+    - Dots are no longer object specifiers
+    - Fix array parsing from skipping empty values
+    - Fix compacting of nested sparse arrays
+    - Fix parsing & compacting very deep objects
   * deps: type-is@~1.6.15
     - Fix type error when given invalid type to match against
     - deps: mime-types@~2.1.15
