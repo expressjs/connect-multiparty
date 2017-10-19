@@ -12,6 +12,7 @@
   * deps: type-is@~1.6.15
     - Fix type error when given invalid type to match against
     - deps: mime-types@~2.1.15
+  * perf: enable strict mode
 
 2.0.0 / 2015-07-13
 ==================
