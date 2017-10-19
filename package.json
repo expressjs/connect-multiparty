@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "multipart parsing middleware for connect using multiparty",
   "author": "Andrew Kelley <superjoe30@gmail.com>",
+  "contributors": [
+    "Douglas Christopher Wilson <doug@somethingdoug.com>"
+  ],
   "license": "MIT",
   "repository": "expressjs/connect-multiparty",
   "dependencies": {
