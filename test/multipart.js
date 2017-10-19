@@ -80,6 +80,15 @@ describe('multipart()', function(){
       .expect(200, { user: 'Tobi', age: '1' }, done)
     })
     
+    it('should handle duplicated fields', function (done) {
+      request(createServer())
+      .post('/body')
+      .field('user', 'Tobi')
+      .field('user', 'Loki')
+      .field('user', 'Poki')
+      .expect(200, { user: [ 'Tobi', 'Loki', 'Poki' ] }, done)
+    })
+
     it('should support nesting', function(done){
       request(createServer())
       .post('/body')
