@@ -19,6 +19,13 @@ var qs = require('qs');
 var typeis = require('type-is');
 
 /**
+ * Module exports.
+ * @public
+ */
+
+module.exports = multipart
+
+/**
  * Parse multipart/form-data request bodies, providing the parsed
  * object as `req.body` and `req.files`.
  *
@@ -34,7 +41,7 @@ var typeis = require('type-is');
  * @public
  */
 
-exports = module.exports = function(options){
+function multipart (options) {
   options = options || {};
 
   return function multipart(req, res, next) {
