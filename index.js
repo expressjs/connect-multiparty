@@ -104,8 +104,8 @@ function multipart (options) {
       done = true;
 
       try {
-        req.body = qs.parse(data);
-        req.files = qs.parse(files);
+        req.body = qs.parse(data, { allowDots: true })
+        req.files = qs.parse(files, { allowDots: true })
         next();
       } catch (err) {
         err.status = 400;
