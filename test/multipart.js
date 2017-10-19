@@ -23,6 +23,21 @@ describe('multipart()', function(){
       .expect(200, { user: 'Tobi' }, done)
     })
 
+    it('should handle duplicated middleware', function (done) {
+      var app = connect()
+      .use(multipart())
+      .use(multipart())
+      .use(function (req, res) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.end(JSON.stringify(req.body))
+      })
+
+      request(app)
+      .post('/body')
+      .field('user', 'Tobi')
+      .expect(200, { user: 'Tobi' }, done)
+    })
+
     it('should support files', function(done){
       var app = createServer()
 
