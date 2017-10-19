@@ -1,5 +1,5 @@
 /*!
- * Connect - multipart
+ * connect-multiparty
  * Copyright(c) 2010 Sencha Inc.
  * Copyright(c) 2011 TJ Holowaychuk
  * Copyright(c) 2013 Andrew Kelley
@@ -8,6 +8,7 @@
 
 /**
  * Module dependencies.
+ * @private
  */
 
 var multiparty = require('multiparty');
@@ -16,23 +17,19 @@ var qs = require('qs');
 var typeis = require('type-is');
 
 /**
- * Multipart:
- * 
- * Parse multipart/form-data request bodies,
- * providing the parsed object as `req.body`
- * and `req.files`.
+ * Parse multipart/form-data request bodies, providing the parsed
+ * object as `req.body` and `req.files`.
  *
- * Configuration:
+ * The options passed are merged with [multiparty](https://github.com/pillarjs/multiparty)'s
+ * `Form` object, allowing you to configure the upload directory,
+ * size limits, etc. For example if you wish to change the upload
+ * dir do the following:
  *
- *  The options passed are merged with [multiparty](https://github.com/andrewrk/node-multiparty)'s
- *  `Form` object, allowing you to configure the upload directory,
- *  size limits, etc. For example if you wish to change the upload dir do the following.
- *
- *     app.use(connect.multipart({ uploadDir: path }));
+ *     app.use(multipart({ uploadDir: path }))
  *
  * @param {Object} options
  * @return {Function}
- * @api public
+ * @public
  */
 
 exports = module.exports = function(options){
