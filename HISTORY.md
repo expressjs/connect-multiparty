@@ -1,5 +1,5 @@
-unreleased
-==========
+2.1.0 / 2017-10-19
+==================
 
   * deps: multiparty@~4.1.3
     - Use `os.tmpdir()` instead of `os.tmpDir()`
