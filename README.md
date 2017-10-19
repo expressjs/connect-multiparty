@@ -30,6 +30,10 @@ app.post('/upload', multipartMiddleware, function(req, resp) {
 If you pass options to `multipart()`, they are passed directly into
 multiparty.
 
+## License
+
+[MIT](LICENSE)
+
 [coveralls-image]: https://img.shields.io/coveralls/expressjs/connect-multiparty/master.svg
 [coveralls-url]: https://coveralls.io/r/expressjs/connect-multiparty?branch=master
 [downloads-image]: https://img.shields.io/npm/dm/connect-multiparty.svg
