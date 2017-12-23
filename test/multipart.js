@@ -106,49 +106,37 @@ describe('multipart()', function(){
     })
 
     it('should support multiple files of the same name', function(done){
-      var app = createServer()
-
-      app.use(function(req, res){
-        req.files.text.should.have.length(2);
-        req.files.text[0].constructor.name.should.equal('Object');
-        req.files.text[1].constructor.name.should.equal('Object');
-        res.end();
-      });
-
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/files')
       .attach('text', Buffer.from('some text here'), 'foo.txt')
       .attach('text', Buffer.from('some more text stuff'), 'bar.txt')
-      .expect(200, done);
+      .expect(200)
+      .expect(shouldDeepIncludeInBody({
+        text: [
+          { name: 'foo.txt' },
+          { name: 'bar.txt' }
+        ]
+      }))
+      .end(done)
     })
-    
+
     it('should support nested files', function(done){
-      var app = createServer()
-
-      app.use(function(req, res){
-        Object.keys(req.files.docs).should.have.length(2);
-        req.files.docs.foo.originalFilename.should.equal('foo.txt');
-        req.files.docs.bar.originalFilename.should.equal('bar.txt');
-        res.end();
-      });
-
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/files')
       .attach('docs[foo]', Buffer.from('some text here'), 'foo.txt')
       .attach('docs[bar]', Buffer.from('some more text stuff'), 'bar.txt')
-      .expect(200, done);
+      .expect(200)
+      .expect(shouldDeepIncludeInBody({
+        docs: {
+          foo: { name: 'foo.txt' },
+          bar: { name: 'bar.txt' }
+        }
+      }))
+      .end(done)
     })
     
     it('should next(err) on multipart failure', function(done){
-      var app = createServer()
-
-      app.use(function(err, req, res, next){
-        err.message.should.equal('Expected alphabetic character, received 61');
-        res.statusCode = err.status;
-        res.end('bad request');
-      });
-
-      var test = request(app).post('/');
+      var test = request(createServer()).post('/')
       test.set('Content-Type', 'multipart/form-data; boundary=foo');
       test.write('--foo\r\n');
       test.write('Content-filename="foo.txt"\r\n');
@@ -158,20 +146,13 @@ describe('multipart()', function(){
       test.write('\r\n');
       test.write('some more text stuff');
       test.write('\r\n--foo--');
-      test.expect(400, 'bad request', done);
+      test.expect(400, /Error: Expected alphabetic character, received 61/, done)
     })
 
     it('should not hang request on failure', function(done){
-      var app = createServer()
-      var buf = Buffer.alloc(1024 * 10, '.')
+      var buff = Buffer.alloc(1024 * 10, '.')
+      var test = request(createServer()).post('/')
 
-      app.use(function(err, req, res, next){
-        err.message.should.equal('Expected alphabetic character, received 61');
-        res.statusCode = err.status;
-        res.end('bad request');
-      });
-
-      var test = request(app).post('/');
       test.set('Content-Type', 'multipart/form-data; boundary=foo');
       test.write('--foo\r\n');
       test.write('Content-filename="foo.txt"\r\n');
@@ -181,10 +162,10 @@ describe('multipart()', function(){
       test.write('\r\n');
       test.write('some more text stuff');
       test.write('\r\n--foo--');
-      test.write(buf);
-      test.write(buf);
-      test.write(buf);
-      test.expect(400, 'bad request', done);
+      test.write(buff)
+      test.write(buff)
+      test.write(buff)
+      test.expect(400, /Error: Expected alphabetic character, received 61/, done)
     })
 
     it('should default req.files to {}', function(done){
@@ -221,4 +202,10 @@ function createServer (opts) {
   })
 
   return app
+}
+
+function shouldDeepIncludeInBody (obj) {
+  return function (res) {
+    should(res.body).containDeep(obj)
+  }
 }
