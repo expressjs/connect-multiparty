@@ -14,6 +14,8 @@ before_install:
 script:
   # Run test script
   - "npm run-script test-ci"
+  # Run linting
+  - "npm run-script lint"
 after_script:
   # Report coverage
   - "test -d .nyc_output && npm install coveralls@2 && nyc report --reporter=text-lcov | coveralls"

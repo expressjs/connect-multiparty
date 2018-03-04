@@ -54,7 +54,7 @@ describe('multipart()', function(){
       .attach('text', Buffer.from('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
-    
+
     it('should keep extensions', function(done){
       var app = createServer()
 
@@ -71,7 +71,7 @@ describe('multipart()', function(){
       .attach('text', Buffer.from('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
-    
+
     it('should work with multiple fields', function(done){
       request(createServer())
       .post('/body')
@@ -79,7 +79,7 @@ describe('multipart()', function(){
       .field('age', '1')
       .expect(200, { user: 'Tobi', age: '1' }, done)
     })
-    
+
     it('should handle duplicated fields', function (done) {
       request(createServer())
       .post('/body')
@@ -134,7 +134,7 @@ describe('multipart()', function(){
       }))
       .end(done)
     })
-    
+
     it('should next(err) on multipart failure', function(done){
       var test = request(createServer()).post('/')
       test.set('Content-Type', 'multipart/form-data; boundary=foo');
