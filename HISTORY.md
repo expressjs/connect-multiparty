@@ -1,6 +1,10 @@
 unreleased
 ==========
 
+  * deps: multiparty@~4.1.4
+    - Enable strict mode
+    - Fix file extension filtering stopping on certain whitespace characters
+    - Use safe-buffer for improved API safety
   * deps: type-is@~1.6.16
     - deps: mime-types@~2.1.18
 
