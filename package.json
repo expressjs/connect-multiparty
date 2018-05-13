@@ -11,7 +11,7 @@
   "dependencies": {
     "multiparty": "~4.1.4",
     "on-finished": "~2.3.0",
-    "qs": "~6.5.1",
+    "qs": "~6.5.2",
     "type-is": "~1.6.16"
   },
   "engines": {
