@@ -1,6 +1,6 @@
 {
   "name": "connect-multiparty",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "multipart parsing middleware for connect using multiparty",
   "author": "Andrew Kelley <superjoe30@gmail.com>",
   "contributors": [

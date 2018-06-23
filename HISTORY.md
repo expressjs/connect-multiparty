@@ -1,5 +1,5 @@
-unreleased
-==========
+2.1.1 / 2018-06-22
+==================
 
   * deps: multiparty@~4.1.4
     - Enable strict mode
