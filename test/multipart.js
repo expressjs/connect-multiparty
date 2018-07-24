@@ -42,7 +42,6 @@ describe('multipart()', function(){
       var app = createServer()
 
       app.use(function(req, res){
-        should(req.body.user).eql({ name: 'Tobi' });
         req.files.text.path.should.endWith('.txt');
         req.files.text.constructor.name.should.equal('Object');
         res.end(req.files.text.originalFilename);
@@ -50,7 +49,6 @@ describe('multipart()', function(){
 
       request(app)
       .post('/')
-      .field('user[name]', 'Tobi')
       .attach('text', Buffer.from('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
@@ -59,7 +57,6 @@ describe('multipart()', function(){
       var app = createServer()
 
       app.use(function(req, res){
-        should(req.body.user).eql({ name: 'Tobi' });
         req.files.text.path.should.endWith('.txt');
         req.files.text.constructor.name.should.equal('Object');
         res.end(req.files.text.originalFilename);
@@ -67,7 +64,6 @@ describe('multipart()', function(){
 
       request(app)
       .post('/')
-      .field('user[name]', 'Tobi')
       .attach('text', Buffer.from('some text here'), 'foo.txt')
       .expect(200, 'foo.txt', done);
     })
