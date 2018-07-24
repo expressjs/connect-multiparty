@@ -39,33 +39,19 @@ describe('multipart()', function(){
     })
 
     it('should support files', function(done){
-      var app = createServer()
-
-      app.use(function(req, res){
-        req.files.text.path.should.endWith('.txt');
-        req.files.text.constructor.name.should.equal('Object');
-        res.end(req.files.text.originalFilename);
-      });
-
-      request(app)
-      .post('/')
+      request(createServer())
+      .post('/files')
       .attach('text', Buffer.from('some text here'), 'foo.txt')
-      .expect(200, 'foo.txt', done);
-    })
-
-    it('should keep extensions', function(done){
-      var app = createServer()
-
-      app.use(function(req, res){
-        req.files.text.path.should.endWith('.txt');
-        req.files.text.constructor.name.should.equal('Object');
-        res.end(req.files.text.originalFilename);
-      });
-
-      request(app)
-      .post('/')
-      .attach('text', Buffer.from('some text here'), 'foo.txt')
-      .expect(200, 'foo.txt', done);
+      .expect(200)
+      .expect(shouldDeepIncludeInBody({
+        text: {
+          name: 'foo.txt',
+          originalFilename: 'foo.txt',
+          size: 14,
+          type: 'text/plain'
+        }
+      }))
+      .end(done)
     })
 
     it('should work with multiple fields', function(done){
