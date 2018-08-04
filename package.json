@@ -23,7 +23,7 @@
     "mocha": "3.5.3",
     "nyc": "10.3.2",
     "safe-buffer": "5.1.2",
-    "should": "13.2.1",
+    "should": "13.2.3",
     "supertest": "2.0.0"
   },
   "files": [
