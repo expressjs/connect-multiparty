@@ -1,3 +1,12 @@
+unreleased
+==========
+
+  * deps: multiparty@~4.2.1
+    - Use http-errors for raised errors
+    - Use uid-safe module to for temp file names
+    - Update to fd-slicer 1.1.0
+    - perf: remove parameter reassignment
+
 2.1.1 / 2018-06-22
 ==================
 
