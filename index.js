@@ -13,6 +13,7 @@
  * @private
  */
 
+var createError = require('http-errors')
 var multiparty = require('multiparty');
 var onFinished = require('on-finished');
 var qs = require('qs');
@@ -88,13 +89,16 @@ function multipart (options) {
       if (done) return;
 
       done = true;
-      err.status = 400;
 
-      if (!req.readable) return next(err);
+      // set status code on error
+      var error = createError(400, err)
 
+      if (!req.readable) return next(error)
+
+      // read off entire request
       req.resume();
       onFinished(req, function(){
-        next(err);
+        next(error)
       });
     });
 
@@ -108,8 +112,7 @@ function multipart (options) {
         req.files = qs.parse(files, { allowDots: true })
         next();
       } catch (err) {
-        err.status = 400;
-        next(err);
+        next(createError(400, err))
       }
     });
 

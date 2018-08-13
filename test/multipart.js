@@ -156,14 +156,14 @@ describe('multipart()', function(){
       .expect(200, {}, done)
     })
 
-    it('should return 400 on maxFilesSize exceeded', function(done){
+    it('should return 413 on maxFilesSize exceeded', function (done) {
       var max = Math.pow(2, 9)
 
       request(createServer({ maxFilesSize: max }))
       .post('/files')
       .field('user[name]', 'Tobi')
       .attach('text', Buffer.alloc(max + 1, 'x'), 'foo.txt')
-      .expect(400, done);
+      .expect(413, done)
     })
   })
 })

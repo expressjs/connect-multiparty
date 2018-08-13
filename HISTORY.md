@@ -1,6 +1,7 @@
 unreleased
 ==========
 
+  * Fix masking `multiparty` errors as 400
   * deps: multiparty@~4.2.1
     - Use http-errors for raised errors
     - Use uid-safe module to for temp file names
