@@ -118,7 +118,9 @@ describe('multipart()', function(){
     })
 
     it('should next(err) on multipart failure', function(done){
-      var test = request(createServer()).post('/')
+      var app = createServer()
+
+      var test = request(app).post('/')
       test.set('Content-Type', 'multipart/form-data; boundary=foo');
       test.write('--foo\r\n');
       test.write('Content-filename="foo.txt"\r\n');
@@ -128,13 +130,14 @@ describe('multipart()', function(){
       test.write('\r\n');
       test.write('some more text stuff');
       test.write('\r\n--foo--');
-      test.expect(400, /Error: Expected alphabetic character, received 61/, done)
+      test.expect(400, 'BadRequestError: Expected alphabetic character, received 61', done)
     })
 
     it('should not hang request on failure', function(done){
-      var buff = Buffer.alloc(1024 * 10, '.')
-      var test = request(createServer()).post('/')
+      var app = createServer()
+      var buf = Buffer.alloc(1024 * 10, '.')
 
+      var test = request(app).post('/')
       test.set('Content-Type', 'multipart/form-data; boundary=foo');
       test.write('--foo\r\n');
       test.write('Content-filename="foo.txt"\r\n');
@@ -144,10 +147,10 @@ describe('multipart()', function(){
       test.write('\r\n');
       test.write('some more text stuff');
       test.write('\r\n--foo--');
-      test.write(buff)
-      test.write(buff)
-      test.write(buff)
-      test.expect(400, /Error: Expected alphabetic character, received 61/, done)
+      test.write(buf)
+      test.write(buf)
+      test.write(buf)
+      test.expect(400, 'BadRequestError: Expected alphabetic character, received 61', done)
     })
 
     it('should default req.files to {}', function(done){
@@ -181,6 +184,11 @@ function createServer (opts) {
   app.use('/files', function (req, res) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8')
     res.end(JSON.stringify(req.files))
+  })
+
+  app.use(function (err, req, res, next) {
+    res.statusCode = err.statusCode || err.status || 500
+    res.end(err.name + ': ' + err.message)
   })
 
   return app
