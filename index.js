@@ -107,13 +107,11 @@ function multipart (options) {
 
       done = true;
 
-      try {
-        req.body = qs.parse(data, { allowDots: true })
-        req.files = qs.parse(files, { allowDots: true })
-        next();
-      } catch (err) {
-        next(createError(400, err))
-      }
+      // expand names with qs & assign
+      req.body = qs.parse(data, { allowDots: true })
+      req.files = qs.parse(files, { allowDots: true })
+
+      next()
     });
 
     form.parse(req);
