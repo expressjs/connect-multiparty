@@ -22,7 +22,7 @@
     "connect": "3.6.6",
     "eslint": "2.13.1",
     "mocha": "3.5.3",
-    "nyc": "10.3.2",
+    "nyc": "11.9.0",
     "safe-buffer": "5.1.2",
     "should": "13.2.3",
     "supertest": "2.0.0"
