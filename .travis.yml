@@ -16,6 +16,12 @@ before_install:
     npm config set shrinkwrap false
   # Setup Node.js version-specific dependencies
   - |
+    # mocha for testing
+    # - use 3.x for Node.js < 6
+    if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 6 ]]; then
+      npm install --save-dev mocha@3.5.3
+    fi
+  - |
     # nyc for coverage
     # - use 10.x for Node.js < 4
     if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 4 ]]; then
