@@ -1,5 +1,5 @@
-unreleased
-==========
+2.2.0 / 2018-09-14
+==================
 
   * Fix masking `multiparty` errors as 400
   * deps: multiparty@~4.2.1
