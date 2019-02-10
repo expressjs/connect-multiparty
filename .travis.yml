@@ -16,6 +16,12 @@ before_install:
     npm config set shrinkwrap false
   # Setup Node.js version-specific dependencies
   - |
+    # eslint for linting
+    # - remove for Node.js < 4
+    if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 4 ]]; then
+      npm rm --save-dev eslint
+    fi
+  - |
     # mocha for testing
     # - use 3.x for Node.js < 6
     if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 6 ]]; then
@@ -50,7 +56,9 @@ script:
     npm run-script test-ci
   - |
     # Run linting
-    npm run-script lint
+    if npm -ps ls eslint | grep -q eslint; then
+      npm run-script lint
+    fi
 after_script:
   - |
     # Upload coverage to coveralls, if exists
