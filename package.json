@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": "expressjs/connect-multiparty",
   "dependencies": {
-    "http-errors": "~1.7.0",
+    "http-errors": "~1.7.1",
     "multiparty": "~4.2.1",
     "on-finished": "~2.3.0",
     "qs": "~6.5.2",
