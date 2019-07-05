@@ -3,9 +3,9 @@ process.env.NODE_ENV = 'test';
 
 var Buffer = require('safe-buffer').Buffer
 var connect = require('connect');
+var deepEqual = require('deep-equal')
 var multipart = require('..');
 var request = require('supertest');
-var should = require('should');
 
 describe('multipart()', function(){
   it('should ignore GET', function(done){
@@ -196,6 +196,6 @@ function createServer (opts) {
 
 function shouldDeepIncludeInBody (obj) {
   return function (res) {
-    should(res.body).containDeep(obj)
+    deepEqual(res.body, obj)
   }
 }
