@@ -24,7 +24,7 @@
     "eslint": "6.0.1",
     "mocha": "6.1.4",
     "nyc": "14.1.1",
-    "safe-buffer": "5.1.2",
+    "safe-buffer": "5.2.0",
     "supertest": "3.4.2"
   },
   "files": [
