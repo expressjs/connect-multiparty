@@ -13,7 +13,7 @@
     "multiparty": "~4.2.1",
     "on-finished": "~2.3.0",
     "qs": "~6.5.2",
-    "type-is": "~1.6.16"
+    "type-is": "~1.6.18"
   },
   "engines": {
     "node": ">=0.10.0"
