@@ -5,7 +5,7 @@ unreleased
      - Fix error creating objects in some environments
      - deps: inherits@2.0.4
      - deps: setprototypeof@1.1.1
-  * deps: qs@~6.6.0
+  * deps: qs@~6.7.0
     - Fix parsing array brackets after index
   * deps: safe-buffer@5.2.0
   * deps: type-is@~1.6.18
