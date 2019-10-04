@@ -21,7 +21,7 @@
   "devDependencies": {
     "connect": "3.7.0",
     "deep-equal": "1.0.1",
-    "eslint": "6.2.1",
+    "eslint": "6.5.1",
     "mocha": "6.2.1",
     "nyc": "14.1.1",
     "safe-buffer": "5.2.0",
